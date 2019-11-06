@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Zdragas Map on Github</title>
+    <meta charset="utf-8" />  <!--//Το character set που χρησιμοποείται-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" /> <!--//Ενσωμάτωση για την εμφάνιση του leaflet-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css"/>  <!--Ενσωμάτωση για την εμφάνιση του leaflet.draw-->
+</head>
+<body>
+    <div id="map" style="width: 1200px; height: 800px"></div> <!--Division για το μέγεθος του χάρτη στην σελίδα -->
+
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script> <!--Ενσωμάτωση Javascript για το leaflet -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script> <!--leaflet Plugin: Ενσωμάτωση Javascript για το draw toolbar -->
+
+    <script> //Javascript
+        var map = L.map('map').setView([39.63723243,22.41816044],12); //Που εστιάζει ο χάρτης αρχικά και το αρχικό zoom
+        mapLink =
+            '<a href="http://openstreetmap.org">OpenStreetMap</a>'; //link στο url του χάρτη
+        L.tileLayer(    //Συνάρτηση: το tileLayer φορτωνει και παρουσιάζει τον server με τα στρώματα-πλακίδια του χάρτη. Απαιτεί ενσωμάτωση attribution
+            'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {  //
+            attribution: '&copy; ' + mapLink + ' Contributors',
+            maxZoom: 19,
+          }).addTo(map);  //μέθοδος: Adds the layer to the given map or layer group.
+
+
+        //FeatureGroup is to store editable layers
+        //Extended LayerGroup that makes it easier to do the same thing to all its member layers:
+        var drawnItems = new L.FeatureGroup(); //Η μεταβλητή drawnItems είναι χάρτης. Μέθοδος FeatureGroup():Create a feature group, optionally given an initial set of layers.
+        map.addLayer(drawnItems);
+        var drawControl = new L.Control.Draw({ //Adding the edit toolbar
+          draw: {
+            polygon: false,
+            polyline: false,
+            rectangle: false,
+            circle: false
+               },
+          edit: {
+                 featureGroup: drawnItems
+             }
+        });
+        map.addControl(drawControl);
+
+        map.on('draw:created', function (e) {
+        var type = e.layerType,
+        layer = e.layer;
+        drawnItems.addLayer(layer);
+        });
+
+        var myIcon = L.icon({
+            iconUrl: 'img/map-marker.svg',
+            iconSize: [32, 37],
+            iconAnchor: [22, 94],
+            popupAnchor: [-3, -76],
+            });
+        L.marker([39.64009524638227, 22.414984703063965], {icon: myIcon}).addTo(map);
+
+    </script>
+</body>
+</html>
