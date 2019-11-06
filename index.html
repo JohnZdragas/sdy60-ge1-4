@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css"/>  <!--Ενσωμάτωση για την εμφάνιση του leaflet.draw-->
 </head>
 <body>
-    <div id="map" style="width: 1200px; height: 800px"></div> <!--Division για το μέγεθος του χάρτη στην σελίδα -->
+    <div id="map" style="width: 1250px; height: 900px"></div> <!--Division για το μέγεθος του χάρτη στην σελίδα -->
 
     <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script> <!--Ενσωμάτωση Javascript για το leaflet -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script> <!--leaflet Plugin: Ενσωμάτωση Javascript για το draw toolbar -->
@@ -22,46 +22,64 @@
             maxZoom: 19,
           }).addTo(map);  //μέθοδος: Adds the layer to the given map or layer group.
 
+          //FeatureGroup is to store editable layers
+          //Extended LayerGroup that makes it easier to do the same thing to all its member layers:
+          var drawnItems = new L.FeatureGroup(); //Η μεταβλητή drawnItems είναι χάρτης. Μέθοδος FeatureGroup():Create a feature group, optionally given an initial set of layers.
+          map.addLayer(drawnItems);
+          var drawControl = new L.Control.Draw({ //Adding the edit toolbar
+            draw: {
+              polygon: false,
+              polyline: false,
+              rectangle: false,
+              circle: false
+                 },
+            edit: {
+                   featureGroup: drawnItems
+               }
+          });
+          map.addControl(drawControl);
 
-        //FeatureGroup is to store editable layers
-        //Extended LayerGroup that makes it easier to do the same thing to all its member layers:
-        /*var drawnItems = new L.FeatureGroup(); //Η μεταβλητή drawnItems είναι χάρτης. Μέθοδος FeatureGroup():Create a feature group, optionally given an initial set of layers.
-        map.addLayer(drawnItems);
-        var drawControl = new L.Control.Draw({ //Adding the edit toolbar
-          draw: {
-            polygon: false,
-            polyline: false,
-            rectangle: false,
-            circle: false
-               },
-          edit: {
-                 featureGroup: drawnItems
-             }
-        });
-        map.addControl(drawControl);
+          map.on('draw:created', function (e) {
+          var type = e.layerType,
+          layer = e.layer;
+          drawnItems.addLayer(layer);
+          });
 
-        map.on('draw:created', function (e) {
-        var type = e.layerType,
-        layer = e.layer;
-        drawnItems.addLayer(layer);
-        });
 
-        newMarkerGroup = new L.LayerGroup();
-        map.on('click', addMarker);
-        function addMarker(e){
-          // Add marker to map at click location; add popup window
-          var newMarker = new L.marker(e.latlng).addTo(map);
-        }
-*/
-        var myIcon = L.icon({
-            iconUrl: 'img/map-marker.svg',
-            iconSize: [32, 37],
-            iconAnchor: [22, 94],
-            popupAnchor: [-3, -76],
-            });
+          var myIcon = L.icon({
+              iconUrl: 'img/map-marker.svg',
+              iconSize: [32, 37],
+              iconAnchor: [22, 94],
+              popupAnchor: [-3, -76],
+              });
 
-        //L.marker([39.64009524638227, 22.414984703063965], {icon: myIcon}).addTo(map);
+          // LOCATION SERVICE
+          map.locate({setView: true, maxZoom: 16});
+          function onLocationFound(e) {
+            L.marker(e.latlng).addTo(map)
+          }
+          map.on('locationfound', onLocationFound);
 
+          function onLocationError(e) {
+            alert(e.message);
+          }
+          //End of Location service,
+
+
+          //GET LATLNG PARAMETERS AFTER CLICK IN CONSOLE
+          map.on('click', function(e) {
+            var popLocation= e.latlng;
+            var popup = L.popup()
+            .setLatLng(popLocation)
+            var Location_Info = window.prompt("Καλώς Ήρθατε στην διαδραστική εφαρμογή μας!!! \n Τοποθετήστε απο την πλευρική εργαλειοθήκη μια πινέζα στο σημείο που θέλετε να σχολιάσετε. \n Στη συνέχεια εισάγετε πληροφορίες και εικόνες για το σημείο που βρίσκεστε");
+            var marker = new L.marker(e.latlng, {draggable: true})
+            .addTo(map).bindPopup(Location_Info + "</br>" + '<img src="/img/new_image.png" />')
+            .openPopup();
+          });
+
+
+
+        //αρχείο geojson για την εισαγωγή σημείων ενδιαφέροντος στο χάρτη
         var geojson = {
   "type": "FeatureCollection",
   "features": [
@@ -162,6 +180,7 @@
           return (layer.feature.properties.info + '/br' + "<img src="+layer.feature.properties.image+" >");
         }).addTo(map);
 
-    </script>
+        
+      </script>
 </body>
 </html>
