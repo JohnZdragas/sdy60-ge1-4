@@ -14,15 +14,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script> <!--leaflet Plugin: Ενσωμάτωση Javascript για το draw toolbar -->
 
     <script> //Javascript
-        var map = L.map('map').setView([39.63723243,22.41816044],15); //Που εστιάζει ο χάρτης αρχικά και το αρχικό zoom
-        mapLink =
-            '<a href="http://openstreetmap.org">OpenStreetMap</a>'; //link στο url του χάρτη
-        L.tileLayer(    //Συνάρτηση: το tileLayer φορτωνει και παρουσιάζει τον server με τα στρώματα-πλακίδια του χάρτη. Απαιτεί ενσωμάτωση attribution
-            'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {  //
-            attribution: '&copy; ' + mapLink + ' Contributors',
-            maxZoom: 19,
-          }).addTo(map);  //μέθοδος: Adds the layer to the given map or layer group.
-
+        var map = L.map('map').fitWorld(); //Που εστιάζει ο χάρτης αρχικά και το αρχικό zoom
+        L.tileLayer('https://api.tiles.mapbox.com/v4/MapID/997/256/{z}/{x}/{y}.png?access_token={accessToken}', {
+          attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+          maxZoom: 18
+        }).addTo(map);
 
         //FeatureGroup is to store editable layers
         //Extended LayerGroup that makes it easier to do the same thing to all its member layers:
