@@ -13,7 +13,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script> <!--leaflet Plugin: Ενσωμάτωση Javascript για το draw toolbar -->
 
     <script> //Javascript
-        var map = L.map('map').setView([39.63723243,22.41816044],12); //Που εστιάζει ο χάρτης αρχικά και το αρχικό zoom
+        var map = L.map('map').setView([39.63723243,22.41816044],15); //Που εστιάζει ο χάρτης αρχικά και το αρχικό zoom
         mapLink =
             '<a href="http://openstreetmap.org">OpenStreetMap</a>'; //link στο url του χάρτη
         L.tileLayer(    //Συνάρτηση: το tileLayer φορτωνει και παρουσιάζει τον server με τα στρώματα-πλακίδια του χάρτη. Απαιτεί ενσωμάτωση attribution
@@ -25,7 +25,7 @@
 
         //FeatureGroup is to store editable layers
         //Extended LayerGroup that makes it easier to do the same thing to all its member layers:
-        var drawnItems = new L.FeatureGroup(); //Η μεταβλητή drawnItems είναι χάρτης. Μέθοδος FeatureGroup():Create a feature group, optionally given an initial set of layers.
+        /*var drawnItems = new L.FeatureGroup(); //Η μεταβλητή drawnItems είναι χάρτης. Μέθοδος FeatureGroup():Create a feature group, optionally given an initial set of layers.
         map.addLayer(drawnItems);
         var drawControl = new L.Control.Draw({ //Adding the edit toolbar
           draw: {
@@ -46,13 +46,121 @@
         drawnItems.addLayer(layer);
         });
 
+        newMarkerGroup = new L.LayerGroup();
+        map.on('click', addMarker);
+        function addMarker(e){
+          // Add marker to map at click location; add popup window
+          var newMarker = new L.marker(e.latlng).addTo(map);
+        }
+*/
         var myIcon = L.icon({
             iconUrl: 'img/map-marker.svg',
             iconSize: [32, 37],
             iconAnchor: [22, 94],
             popupAnchor: [-3, -76],
             });
-        L.marker([39.64009524638227, 22.414984703063965], {icon: myIcon}).addTo(map);
+
+        //L.marker([39.64009524638227, 22.414984703063965], {icon: myIcon}).addTo(map);
+
+        var geojson = {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "marker-color": "#ff0000",
+        "marker-size": "medium",
+        "marker-symbol": "img/map-marker.svg",
+        "info": "Ο Μητροπολιτικός Ναός Αγίου Αχιλλείου O Άγιος Αχίλλειος είναι ο Μητροπολιτικός Ναός της πόλης της Λάρισας και είναι αφιερωμένος στον Πολιούχο και προστάτη της πόλης Άγιο Αχίλλειο.  Βρίσκεται στον λόφο του Φρουρίου, στο ψηλότερο σημείο της πόλης και έχει θέα προς το πάρκο του Αλκαζάρ και τον Πηνειό ποταμό που διασχίζει την πόλη.",
+        "image": "img/axillieos.png"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.41349071264267,
+          39.64135724352609
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "marker-color": "#ff0000",
+        "marker-size": "medium",
+        "marker-symbol": "img/map-marker.svg",
+        "info": "Βυζαντινός ναός. Μονόχωρος με περίστωο ναός, κτισμένος στα ερείπια παλαιοχριστιανικής βασιλικής. Από τη βασιλική προέρχεται τμήμα ψηφιδωτού δαπέδου, βάσεις και κορμοί κιόνων από τις κιονοστοιχίες της. Ο ναός διατηρείται στο επίπεδο σχεδόν των θεμελίων με υπολείμματα δαπέδων από πήλινες πλάκες στο εσωτερικό των κογχών του Ιερού Βήματος. Στην κατασκευή του χρησιμοποιήθηκε άφθονο αρχαίο υλικό. Εκτεταμένο νεκροταφείο από κιβωτιόσχημους και κεραμοσκεπείς καλυβίτες τάφους αποκαλύφθηκε μέσα και γύρω από το ναό. Στη βορειοδυτική και νοτιοδυτική γωνία του περιστώου ήταν ενσωματωμένα δύο καμαρωτά οστεοφυλάκια, από τα οποία διατηρείται το νότιο. Ο αρχικός μονόχωρος ναΐσκος χρονολογείται στον 10ο αι., ενώ η προσθήκη του περιστώου στον 12ο αι. Βυζαντινά νεκροταφεία εντοπίστηκαν σε διάφορα σημεία της σημερινής πόλης, όπως στο κέντρο και στις παρυφές της, στη συνοικία Ταμπάκικα, στην οδό Αεροδρομίου, στην οδό Νικηταρά και στη συνοικία Ιπποκράτη.",
+        "image": "img/vizantinos-naos.png"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.415993213653564,
+          39.64117341886112
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "marker-color": "#ff0000",
+        "marker-size": "medium",
+        "marker-symbol": "img/map-marker.svg",
+        "info": "Γενί Τζαμί. Μουσουλμανικό τέμενος που χρονολογείται στα τέλη του 19ου – αρχές 20ού αιώνα. Χρησιμοποιήθηκε ως τζαμί μέχρι το 1924. Βρίσκεται στο κέντρο της σύγχρονης Λάρισας, επί της οδού 31ης Αυγούστου. Πριν από το Β΄ Παγκόσμιο πόλεμο στο τέμενος στεγαζόταν η Δημοτική Βιβλιοθήκη και μια μικρή αρχαιολογική συλλογή (1939-1941) [22], ενώ από τα τέλη του 1950 και μέχρι το 2011 στο κτήριο στεγαζόταν το Αρχαιολογικό Μουσείο της πόλης. Το κτήριο, τετράγωνο στην κάτοψη, αποτελείται από την αίθουσα προσευχής, που φωτίζεται από εννέα τοξωτά ανοίγματα και καλύπτεται με τετράριχτη κεραμοσκεπή στέγη. Στην πρόσοψη τριμερής στοά στηρίζεται σε πεσσούς και καλύπτεται με τρεις ημισφαιρικούς θόλους. Στη βορειοδυτική γωνία της πρόσοψης υψώνεται ο μιναρές, που σώζεται μέχρι τον εξώστη. Το κτήριο διαθέτει νεοκλασικά διακοσμητικά στοιχεία. Το μνημείο, χάρη και στη λειτουργία του ως μουσείου και στη συνεχή μέριμνα της Αρχαιολογικής Υπηρεσίας, βρίσκεται σε καλή κατάσταση. [23] Στα σχέδια της δημοτικής αρχής είναι η λειτουργία του ως χώρος ψηφιακής παρουσίασης του πολιτισμού της Λάρισας, όπου θα τοποθετηθούν ψηφιακά συστήματα προβολής των μνημείων της, αλλά και του σύγχρονου πολιτισμού τους. [24]",
+        "image": "img/yeni-tzami.png"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.419968247413635,
+          39.63948799241437
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "marker-color": "#ff0000",
+        "marker-size": "medium",
+        "marker-symbol": "img/map-marker.svg",
+        "info": "Πάρκο Αλκαζάρ και όχθες Πηνειού ποταμού",
+        "image": "img/parko-alkazar.png"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.411251068115234,
+          39.64512244348187
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "marker-color": "#ff0000",
+        "marker-size": "medium",
+        "marker-symbol": "img/map-marker.svg",
+        "info": "Μύλος του Παππά Πρόκειται για βιομηχανικό κτίριο αλευροποιίας (μύλος), που κατασκευάστηκε το 1883, και λειτούργησε το 1893. Το 1920 το κτήριο καταστράφηκε από πυρκαγιά και ανακατασκευάστηκε το 1921. Στις αποθήκες του στεγάζονται θερινός κινηματογράφος, εργαστήρι εικαστικών τεχνών, σχολή χορού, αίθουσα παραστάσεων, η φιλαρμονική ορχήστρα του δήμου, καθώς επίσης και το πλέον κλασσικό κουκλοθέατρο \"Τιριτόμπα\"",
+        "image": "img/mylos-tou-pappa.png"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.418171167373654,
+          39.64333797492857
+        ]
+      }
+    }
+  ]
+}
+        L.geoJSON(geojson, {
+          pointToLayer: function(geoJsonPoint, latlng) {
+            return L.marker(latlng, {
+              icon: myIcon
+            });
+          }
+        }).bindPopup(function (layer) {
+          return (layer.feature.properties.info + '/br' + "<img src="+layer.feature.properties.image+" >");
+        }).addTo(map);
 
     </script>
 </body>
